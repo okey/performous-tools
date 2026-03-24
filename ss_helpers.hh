@@ -4,7 +4,6 @@
 #include <libxml++/libxml++.h>
 #include <glibmm/convert.h>
 #include "pak.h"
-#include "config.hh"
 
 // LibXML2 logging facility
 extern "C" void xmlLogger(void* logger, char const* msg, ...) { if (logger) *(std::ostream*)logger << msg; }
@@ -18,18 +17,20 @@ std::string filename(boost::filesystem::path const& p) { return p.filename().str
 #endif
 
 namespace xmlpp {
-#if LIBXMLPP_VERSION_2_6
+#if defined(LIBXMLPP_VERSION_2_6) && LIBXMLPP_VERSION_2_6
 	typedef NodeSet const_NodeSet; // implementation to satisfy libxml++ 2.6 API
 
 	static inline const TextNode* get_first_child_text(const Element& element) {
 		return element.get_child_text();
 	}
-#elif LIBXMLPP_VERSION_3_0
+#elif defined(LIBXMLPP_VERSION_3_0) && LIBXMLPP_VERSION_3_0
 	typedef Node::NodeSet const_NodeSet; // correct libxml++ 3.0 implementation
 
 	static inline const TextNode* get_first_child_text(const Element& element) {
 		return element.get_first_child_text();
 	}
+#else
+	#error "LIBXMLPP_VERSION_2_6 or LIBXMLPP_VERSION_3_0 must be defined, did CMake find it?"
 #endif
 }
 
