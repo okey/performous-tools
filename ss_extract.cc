@@ -483,7 +483,7 @@ struct FindSongs {
 			if (medleys.size() > 0) {
 				for (auto const &mt : medleys.front()->get_children("TYPE")) {
 					xmlpp::Element& elem = dynamic_cast<xmlpp::Element&>(*mt);
-					if (elem.get_first_child_text()->get_content() == "Normal") {
+					if (xmlpp::get_first_child_text(elem)->get_content() == "Normal") {
 						s.medleyStart = std::stod(elem.get_attribute("Start")->get_value());
 						s.medleyEnd = std::stod(elem.get_attribute("End")->get_value());
 					}
