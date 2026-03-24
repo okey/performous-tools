@@ -38,7 +38,11 @@ endif()
 
 # Libraries
 
-find_package(Boost 1.34 REQUIRED COMPONENTS filesystem program_options system)
+# boost::system is header only since 1.69
+find_package(Boost 1.69 COMPONENTS filesystem program_options)
+if (NOT Boost_FOUND)
+	find_package(Boost 1.34 REQUIRED COMPONENTS filesystem program_options system)
+endif()
 include_directories(${Boost_INCLUDE_DIRS})
 
 # Find all the libs that don't require extra parameters
